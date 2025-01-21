@@ -26,8 +26,8 @@ Weather Insight is a modern weather application built with React. It provides us
 - **React**: A JavaScript library for building user interfaces.
 - **CSS**: For styling the application.
 - **HTML**: The standard markup language for creating web pages.
-- **Tailwind CSS**: A utility-first CSS framework for creating custom designs without leaving your HTML.
-- **TypeScript**: A superset of JavaScript that adds static types, enhancing code quality and maintainability.
+- **TailwindCSS**: A utility-first CSS framework for creating custom designs.
+- **TypeScript**: A superset of JavaScript that adds static types.
 
 ## Installation
 
@@ -39,7 +39,7 @@ To get a local copy of the project up and running, follow these steps:
 ```
 2. Navigate to the project directory:
 ```
-   cd "Weather Insight"
+   cd Weather-Insight
 ```
 4. Install the dependencies:
 ```
