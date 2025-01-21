@@ -32,23 +32,30 @@ Weather Insight is a modern weather application built with React. It provides us
 ## Installation
 
 To get a local copy of the project up and running, follow these steps:
-```
+
 1. Clone the repository:
-   git clone https://github.com/yourusername/weather-insight.git
-
+```
+   git clone https://github.com/KamyarAzz/Weather-Insight.git
+```
 2. Navigate to the project directory:
-   cd weather-insight
-
-3. Install the dependencies:
+```
+   cd "Weather Insight"
+```
+4. Install the dependencies:
+```
    npm install
-
-4. Create a .env file in the root directory and add your OpenWeatherMap API key:
+```
+5. Create a .env file in the root directory and add your OpenWeatherMap API key:
+```
    VITE_API_KEY=your_api_key_here
-
-5. Start the development server:
+```
+6. Start the development server:
+```
    npm run dev
-
-6. Open your browser and go to http://localhost:5173.
+```
+7. Open your browser and go to
+```
+http://localhost:5173
 ```
 
 ## Usage
@@ -65,5 +72,5 @@ Contributions are welcome! If you have suggestions for improvements or new featu
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
