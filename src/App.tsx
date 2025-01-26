@@ -3,38 +3,38 @@ import WeatherData from "./components/WeatherData";
 import {TLocation} from "./lib/types";
 import {useOutsideClick} from "./hooks/useOutsideClick";
 import Loader from "./components/ui/Loader";
-import WeekDayWeather from "./components/WeekDayWeather";
+import WeekView from "./components/WeekView";
+const weatherKey = import.meta.env.VITE_WEATHER_API_KEY;
+const geoKey = import.meta.env.VITE_GEO_API_KEY;
 
-const weather = {
-  key: "2f22747297bb189f5bea91e28f464efc",
-  baseURL: "https://api.openweathermap.org/data/2.5/weather",
-};
+// Todo:
+// 1. Fix city search and edit
+//    - add search button
+//    - change edit button to search
+//    - handle search on click outside
+//    - fix edit button reopens after closee
+//
+// 2. Add chart
+// 3. Add humidity
+//    - daily get (average of each day)
+//    - backgroudn water getting filled
+// 4. Add polution
+//    - maybe a map
+// 5. Add metrics
 
-const IPadd = {
-  key: "b5cbfbcce3ce4254bc262b9c7d043f1b",
-  baseURL: "https://api.ipgeolocation.io/ipgeo",
+const initialLocation = {
+  city: "",
+  country: "",
+  inititalCity: "",
+  initialCountry: "",
+  ip: "",
 };
 
 function App() {
-  // add keys to env file
-  // handle the ui
-  // and mon,wed etc instead of date
-  // add 0c in weekdays
-  //handle the images
-  const [isHovering1, setIsHovering1] = useState(false);
-  const [isHovering2, setIsHovering2] = useState(false);
-
-  const [location, setLocation] = useState<TLocation>({
-    city: "",
-    country: "",
-    inititalCity: "",
-    initialCountry: "",
-    ip: "",
-  });
+  const [location, setLocation] = useState<TLocation>(initialLocation);
   const [isEditing, setIsEditing] = useState(false);
   const [weatherData, setWeatherData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState<1 | 2>(1);
   const [error, setError] = useState("");
   const ref = useOutsideClick(() => setIsEditing(false));
 
@@ -44,7 +44,9 @@ function App() {
 
   const getIP = async () => {
     try {
-      const response = await fetch(`${IPadd.baseURL}?apiKey=${IPadd.key}`);
+      const response = await fetch(
+        `https://api.ipgeolocation.io/ipgeo?apiKey=${geoKey}`
+      );
       if (!response.ok) {
         setError("Failed to fetch IP address. Please try again later.");
         throw new Error(`Error fetching IP: ${response.statusText}`);
@@ -62,6 +64,28 @@ function App() {
     } catch (error) {
       console.error("Failed to fetch IP:", error);
       setError("Failed to fetch IP address. Please try again later.");
+    }
+  };
+
+  const getWeatherData = async (city: string) => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${weatherKey}`
+      );
+      if (!response.ok) {
+        setError("Failed to fetch weather data. Please try again later.");
+        throw new Error(`Error fetching weather data: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setWeatherData(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Failed to fetch weather data:", error);
+      setError("Failed to fetch weather data. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,29 +123,11 @@ function App() {
     else setIsEditing(true);
   };
 
-  const getWeatherData = async (city: string) => {
-    setLoading(true);
-    setError("");
-    try {
-      const response = await fetch(
-        `${weather.baseURL}?q=${city}&units=metric&appid=${weather.key}`
-      );
-      if (!response.ok) {
-        setError("Failed to fetch weather data. Please try again later.");
-        throw new Error(`Error fetching weather data: ${response.statusText}`);
-      }
-      const data = await response.json();
-      setWeatherData(data);
-      console.log(data);
-    } catch (error) {
-      console.error("Failed to fetch weather data:", error);
-      setError("Failed to fetch weather data. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
+  return loading ? (
+    <div className="flex justify-center items-center w-full h-full">
+      <Loader />
+    </div>
+  ) : (
     <div className="flex flex-col items-center gap-4 py-16 w-full h-full text-black">
       <header className="relative flex items-center">
         {!isEditing && location ? (
@@ -143,7 +149,7 @@ function App() {
             onKeyDown={handleKeyPress}
           />
         )}
-        <div className="-right-[4.75rem] bottom-1.5 absolute flex items-center gap-2">
+        <div className="-right-[4.75rem] bottom-2 absolute flex items-center gap-2">
           <svg
             onClick={editClickHnadler}
             className="w-4 h-4 cursor-pointer"
@@ -162,10 +168,7 @@ function App() {
           </svg>
         </div>
       </header>
-
-      {loading ? (
-        <Loader />
-      ) : error ? (
+      {error ? (
         <p className="text-center text-red-600 text-xl">{error}</p>
       ) : (
         weatherData && (
@@ -173,55 +176,11 @@ function App() {
             <div>
               <h1 className="text-4xl">{weatherData.main.temp} °C</h1>
             </div>
-            <main>
+            <main className="w-full h-max">
               <section className="flex justify-center">
-                {<WeatherData weatherData={weatherData} />}
+                <WeatherData weatherData={weatherData} />
               </section>
-              <section className="flex items-center gap-4 mt-14">
-                <svg
-                  onMouseEnter={() => setIsHovering1(true)}
-                  onMouseLeave={() => setIsHovering1(false)}
-                  className={`w-10 h-10 duration-150 rotate-180 ${
-                    page === 1 ? "cursor-default" : "cursor-pointer"
-                  }`}
-                  fill={page === 1 ? "gray" : isHovering1 ? "purple" : ""}
-                  onClick={() => setPage(1)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 320 512"
-                >
-                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                </svg>
-                {page === 1
-                  ? Array.from({length: 4}, (_, index) => (
-                      <WeekDayWeather
-                        key={index}
-                        city={location.city}
-                        date={new Date(Date.now() + index * 86400000)}
-                        weatherKey={weather}
-                      />
-                    ))
-                  : Array.from({length: 4}, (_, index) => (
-                      <WeekDayWeather
-                        key={index}
-                        city={location.city}
-                        date={new Date(Date.now() + (index + 4) * 86400000)}
-                        weatherKey={weather}
-                      />
-                    ))}
-                <svg
-                  onMouseEnter={() => setIsHovering2(true)}
-                  onMouseLeave={() => setIsHovering2(false)}
-                  className={`w-10 h-10 duration-150 ${
-                    page === 2 ? "cursor-default" : "cursor-pointer"
-                  }`}
-                  fill={page === 2 ? "gray" : isHovering2 ? "purple" : ""}
-                  onClick={() => setPage(2)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 320 512"
-                >
-                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                </svg>
-              </section>
+              <WeekView city={location.city} />
             </main>
           </>
         )
