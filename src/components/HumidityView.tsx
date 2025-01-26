@@ -1,9 +1,7 @@
 type Props = {weatherData: any[]};
 
 export default function HumidityView({weatherData}: Props) {
-  const calculateHumidity = () => {
-    console.log(weatherData);
-  };
+  const humidity = weatherData.map((data: any) => Number(data.main.humidity)); // Ensure humidities are numbers
 
   return (
     <div>

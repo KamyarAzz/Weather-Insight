@@ -7,6 +7,10 @@ import WeekView from "./components/WeekView";
 const weatherKey = import.meta.env.VITE_WEATHER_API_KEY;
 const geoKey = import.meta.env.VITE_GEO_API_KEY;
 
+// 2 chart for temp and humidity
+// 2 dailys (3 days) inside one containers (temp & humid)
+// polution
+
 // Todo:
 // 1. Fix city search and edit
 //    - add search button

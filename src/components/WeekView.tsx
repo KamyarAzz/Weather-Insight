@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Loader from "./ui/Loader";
-// import HumidityView from "./HumidityView";
 import WeatherChart from "./WeatherChart";
+import HumidityView from "./HumidityView";
 const weatherKey = import.meta.env.VITE_WEATHER_API_KEY;
 
 type Props = {city: string};
@@ -23,7 +23,7 @@ export default function WeekView({city}: Props) {
         throw new Error(`Error fetching weather data: ${response.statusText}`);
       }
       const data = await response.json();
-      setWeatherData(data);
+      setWeatherData(data.list);
       console.log(data);
     } catch (error) {
       console.error("Failed to fetch weather data:", error);
@@ -53,8 +53,8 @@ export default function WeekView({city}: Props) {
     </div>
   ) : (
     <section className="flex items-center gap-4 mt-14">
-      {weatherData.list && <WeatherChart weatherData={weatherData.list} />}
-      {/* <HumidityView weatherData={weatherData} /> */}
+      {weatherData.list && <WeatherChart weatherData={weatherData} />}
+      <HumidityView weatherData={weatherData} />
     </section>
   );
 }
