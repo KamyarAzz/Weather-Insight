@@ -37,7 +37,7 @@ export default function WeatherData({weatherData}: Props) {
     <div className="flex flex-col justify-center items-center gap-2 mt-3">
       <Cloud className="w-56" type={weatherData.weather[0].main} />
       <div className="text-gray-600 text-lg">
-        Feels like {weatherData.main.feels_like}
+        Feels like {weatherData.main.feels_like}°C
       </div>
       <div className="flex items-center gap-10">
         <p>Min: {weatherData.main.temp_min}°C</p>
