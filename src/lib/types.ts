@@ -5,8 +5,3 @@ export type TLocation = {
   country: string;
   ip: string;
 };
-
-export type TKey = {
-  key: string;
-  baseURL: string;
-};
