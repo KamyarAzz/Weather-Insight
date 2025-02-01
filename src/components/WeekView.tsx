@@ -52,9 +52,9 @@ export default function WeekView({city}: Props) {
       <p className="text-purple-900">Error</p>
     </div>
   ) : (
-    <section className="flex items-center gap-4 mt-14">
-      {weatherData.list && <WeatherChart weatherData={weatherData} />}
+    <div className="flex flex-col items-center gap-4 mt-6 w-full">
+      <WeatherChart weatherData={weatherData} />
       <HumidityView weatherData={weatherData} />
-    </section>
+    </div>
   );
 }

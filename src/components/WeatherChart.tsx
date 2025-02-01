@@ -6,7 +6,6 @@ import {
   LinearScale,
   CategoryScale,
   Tooltip,
-  Legend,
 } from "chart.js";
 
 // Register the necessary components
@@ -15,8 +14,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
-  Tooltip,
-  Legend
+  Tooltip
 );
 
 type Props = {
@@ -50,23 +48,14 @@ const WeatherChart = ({weatherData}: Props) => {
 
   const options: any = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
+    scroll: true,
     scales: {
-      x: {
-        title: {
-          display: true,
-          text: "Time",
-        },
-      },
       y: {
         beginAtZero: false, // Start Y-axis from the minimum value
       },
     },
     plugins: {
-      legend: {
-        display: true,
-        position: "top",
-      },
       tooltip: {
         enabled: true,
       },
@@ -74,8 +63,8 @@ const WeatherChart = ({weatherData}: Props) => {
   };
 
   return (
-    <div className="w-full">
-      <Line data={data} options={options} />
+    <div className="overflow-x-auto">
+      <Line className="" data={data} options={options} />
     </div>
   );
 };
