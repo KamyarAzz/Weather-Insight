@@ -1,15 +1,16 @@
 import {useEffect, useState} from "react";
-import Loader from "./ui/Loader";
-import WeatherChart from "./WeatherChart";
-import HumidityView from "./HumidityView";
+import Loader from "../ui/Loader";
 const weatherKey = import.meta.env.VITE_WEATHER_API_KEY;
+import HumidityWeekView from "./HumidityWeekView";
+import TempWeekView from "./TempWeekView";
+import {TForecastList} from "../../lib/types";
 
 type Props = {city: string};
 
 export default function WeekView({city}: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [weatherData, setWeatherData] = useState<any>(null);
+  const [weatherData, setWeatherData] = useState<TForecastList[]>();
 
   const getWeatherData = async () => {
     setLoading(true);
@@ -24,7 +25,7 @@ export default function WeekView({city}: Props) {
       }
       const data = await response.json();
       setWeatherData(data.list);
-      console.log(data);
+      console.log("forecast", data);
     } catch (error) {
       console.error("Failed to fetch weather data:", error);
       setError(true);
@@ -39,7 +40,7 @@ export default function WeekView({city}: Props) {
 
   return loading ? (
     <Loader />
-  ) : error ? (
+  ) : error || !weatherData ? (
     <div className="flex justify-center items-center gap-2">
       <svg
         className="w-10 h-10"
@@ -52,9 +53,13 @@ export default function WeekView({city}: Props) {
       <p className="text-purple-900">Error</p>
     </div>
   ) : (
-    <div className="flex flex-col items-center gap-4 mt-6 w-full">
-      <WeatherChart weatherData={weatherData} />
-      <HumidityView weatherData={weatherData} />
-    </div>
+    <section className="flex flex-col gap-10 w-full">
+      <div className="flex flex-start bg-white bg-opacity-15 mt-4 p-5 rounded-md w-full">
+        <TempWeekView weatherData={weatherData} />
+      </div>
+      <div className="flex flex-start bg-white bg-opacity-15 mt-4 p-5 rounded-md w-full">
+        <HumidityWeekView weatherData={weatherData} />
+      </div>
+    </section>
   );
 }

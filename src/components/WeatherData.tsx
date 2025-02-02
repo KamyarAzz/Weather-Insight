@@ -1,38 +1,9 @@
+import {TWeatherData} from "../lib/types";
 import Cloud from "./ui/Cloud";
 
-type Props = {weatherData: any};
+type Props = {weatherData: TWeatherData};
 
 export default function WeatherData({weatherData}: Props) {
-  // const buildDate = () => {
-  //   const months = [
-  //     "January",
-  //     "February",
-  //     "March",
-  //     "April",
-  //     "May",
-  //     "June",
-  //     "July",
-  //     "August",
-  //     "September",
-  //     "October",
-  //     "November",
-  //     "December",
-  //   ];
-  //   const days = [
-  //     "Sunday",
-  //     "Monday",
-  //     "Tuesday",
-  //     "Wednesday",
-  //     "Thursday",
-  //     "Friday",
-  //     "Saturday",
-  //   ];
-  //   const daily = new Date();
-  //   return `${days[daily.getDay()]} ${daily.getDate()} ${
-  //     months[daily.getMonth()]
-  //   } ${daily.getFullYear()}`;
-  // };
-
   return (
     <div className="flex flex-col justify-center items-center gap-3 mt-3">
       <Cloud className="w-56" type={weatherData.weather[0].main} />

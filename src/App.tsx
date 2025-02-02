@@ -1,30 +1,30 @@
 import {useState, useEffect} from "react";
 import WeatherData from "./components/WeatherData";
-import {TLocation} from "./lib/types";
+import {TLocation, TWeatherData} from "./lib/types";
 import Loader from "./components/ui/Loader";
-import WeekView from "./components/WeekView";
+import WeekView from "./components/week-view/WeekView";
 import LocationHeader from "./components/LocationHeader";
 const weatherKey = import.meta.env.VITE_WEATHER_API_KEY;
 const geoKey = import.meta.env.VITE_GEO_API_KEY;
 
-// 2 chart for temp and humidity
-// 2 dailys (3 days) inside one containers (temp & humid)
+// https://github.com/rodrigokamada/openweathermap
 // polution
+// wind and prssure
 
 // Todo:
+// 0. Fix the icons of week view
 // 1. Fix city search and edit
 //    - add search button
 //    - change edit button to search
 //    - handle search on click outside
 //    - fix edit button reopens after closee
 //
-// 2. Add chart
-// 3. Add humidity
-//    - daily get (average of each day)
-//    - backgroudn water getting filled
-// 4. Add polution
+// 2. change chart color and check mobile
+// 3. Add polution
 //    - maybe a map
-// 5. Add metrics
+// 4. Add metrics switch button
+// 5. make UI presentable
+// 6. Add preview
 
 const initialLocation = {
   city: "",
@@ -36,7 +36,7 @@ const initialLocation = {
 
 function App() {
   const [location, setLocation] = useState<TLocation>(initialLocation);
-  const [weatherData, setWeatherData] = useState<any>(null);
+  const [weatherData, setWeatherData] = useState<TWeatherData>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -81,7 +81,7 @@ function App() {
       }
       const data = await response.json();
       setWeatherData(data);
-      console.log(data);
+      console.log("weather", data);
     } catch (error) {
       console.error("Failed to fetch weather data:", error);
       setError("Failed to fetch weather data. Please try again later.");
@@ -122,7 +122,7 @@ function App() {
       <Loader />
     </div>
   ) : (
-    <div className="flex flex-col items-center gap-4 py-16 w-full h-full text-black">
+    <div className="flex flex-col items-center gap-4 py-16 w-full h-full text-black overflow-x-hidden overflow-y-auto">
       <LocationHeader
         location={location}
         changeCity={changeCity}
@@ -135,7 +135,7 @@ function App() {
         <h1>Please choose a location...</h1>
       ) : (
         weatherData && (
-          <main className="flex flex-col justify-center gap-2 w-full max-w-[450px] overflow-y-auto">
+          <main className="flex flex-col justify-center gap-2 w-full max-w-[450px]">
             <div className="bg-white bg-opacity-15 p-5 rounded-md">
               <h1 className="text-4xl text-center">
                 {weatherData.main.temp} °C
@@ -144,9 +144,7 @@ function App() {
                 <WeatherData weatherData={weatherData} />
               </section>
             </div>
-            <section className="flex flex-start bg-white bg-opacity-15 mt-4 p-5 rounded-md w-full overflow-x-auto">
-              <WeekView city={location.city} />
-            </section>
+            <WeekView city={location.city} />
           </main>
         )
       )}
