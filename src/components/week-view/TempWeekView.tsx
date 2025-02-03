@@ -2,9 +2,12 @@ import {TForecastList} from "../../lib/types";
 import CustomChartChart from "./ui/CustomChart";
 import WeatherView from "./ui/WeatherView";
 
-type Props = {weatherData: TForecastList[]};
+type Props = {
+  weatherData: TForecastList[];
+  prefrenceUnit: string;
+};
 
-export default function TempWeekView({weatherData}: Props) {
+export default function TempWeekView({weatherData, prefrenceUnit}: Props) {
   const timeLabels = weatherData.map((data) => {
     const date = new Date(data.dt_txt);
     return `${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")}`;
@@ -41,26 +44,47 @@ export default function TempWeekView({weatherData}: Props) {
           filteredTemperatures.length
         : 0;
 
+    // Count occurrences of each weather condition
+    const weatherCount: {[key: string]: number} = {};
+    filteredData.forEach((data) => {
+      const weatherCondition = data.weather[0].main; // Get the weather condition
+      weatherCount[weatherCondition] =
+        (weatherCount[weatherCondition] || 0) + 1;
+    });
+
+    // Find the most common weather condition
+    let mostCommonWeather = "";
+    let maxCount = 0;
+    for (const [condition, count] of Object.entries(weatherCount)) {
+      if (count > maxCount) {
+        maxCount = count;
+        mostCommonWeather = condition;
+      }
+    }
+
     return {
       day: getDayShortName(date),
       averageTemp: Number(averageTemp.toFixed(2)),
+      mostCommonWeather: mostCommonWeather, // Add the most common weather condition
     };
   });
 
-  console.log(weatherData[0]);
-
   return (
     <div className="flex flex-col items-center gap-4 mt-6 overflow-hidden">
-      <h1 className="text-2xl">Tempreture</h1>
-      <div className="flex gap-10">
+      <h1 className="text-2xl">Temperature Forecast</h1>
+      <div className="flex gap-14 mt-4">
         {averages.map((item) => (
-          <WeatherView key={item.day} averages={item} />
+          <WeatherView
+            prefrenceUnit={prefrenceUnit}
+            key={item.day}
+            averages={item}
+          />
         ))}
       </div>
       <CustomChartChart
         labels={timeLabels}
         chartData={temperatures}
-        extentionString="°C"
+        extentionString={prefrenceUnit}
       />
     </div>
   );

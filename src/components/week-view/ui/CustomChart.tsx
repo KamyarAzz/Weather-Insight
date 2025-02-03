@@ -27,14 +27,22 @@ type Props = {
 };
 
 const CustomChart = ({labels, chartData, extentionString}: Props) => {
+  const isDarkMode = document
+    .getElementById("root")
+    ?.classList.contains("dark");
+
   const data = {
     labels: labels,
     datasets: [
       {
         data: chartData,
         fill: false,
-        borderColor: "rgba(75,192,192,1)",
-        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: isDarkMode
+          ? "rgba(255, 255, 255, 1)"
+          : "rgba(75,192,192,1)",
+        backgroundColor: isDarkMode
+          ? "rgba(255, 255, 255, 0.4)"
+          : "rgba(75,192,192,0.4)",
         tension: 0.3,
         pointRadius: 4,
         pointHoverRadius: 6,
@@ -54,6 +62,7 @@ const CustomChart = ({labels, chartData, extentionString}: Props) => {
           maxRotation: 0,
           minRotation: 0,
           padding: 20,
+          color: "white",
         },
         grid: {
           display: false,
@@ -63,9 +72,7 @@ const CustomChart = ({labels, chartData, extentionString}: Props) => {
         beginAtZero: false,
         ticks: {
           callback: (value: number | string) => `${value} ${extentionString}`,
-        },
-        title: {
-          display: false,
+          color: "white",
         },
       },
     },

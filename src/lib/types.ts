@@ -6,6 +6,11 @@ export type TLocation = {
   ip: string;
 };
 
+export type TPreference =
+  | {type: "standard"; unit: "K"}
+  | {type: "metric"; unit: "°C"}
+  | {type: "imperial"; unit: "°F"};
+
 export type TWeatherData = {
   base: string;
   clouds: {all: number};

@@ -3,11 +3,11 @@ import Loader from "../ui/Loader";
 const weatherKey = import.meta.env.VITE_WEATHER_API_KEY;
 import HumidityWeekView from "./HumidityWeekView";
 import TempWeekView from "./TempWeekView";
-import {TForecastList} from "../../lib/types";
+import {TForecastList, TPreference} from "../../lib/types";
 
-type Props = {city: string};
+type Props = {city: string; prefrence: TPreference};
 
-export default function WeekView({city}: Props) {
+export default function WeekView({city, prefrence}: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [weatherData, setWeatherData] = useState<TForecastList[]>();
@@ -17,7 +17,7 @@ export default function WeekView({city}: Props) {
     setError(false);
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${weatherKey}`
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=${prefrence.type}&appid=${weatherKey}`
       );
       if (!response.ok) {
         setError(true);
@@ -39,7 +39,9 @@ export default function WeekView({city}: Props) {
   }, []);
 
   return loading ? (
-    <Loader />
+    <div className="flex justify-center items-center mt-10 w-full">
+      <Loader />
+    </div>
   ) : error || !weatherData ? (
     <div className="flex justify-center items-center gap-2">
       <svg
@@ -54,10 +56,23 @@ export default function WeekView({city}: Props) {
     </div>
   ) : (
     <section className="flex flex-col gap-10 w-full">
-      <div className="flex flex-start bg-white bg-opacity-15 mt-4 p-5 rounded-md w-full">
-        <TempWeekView weatherData={weatherData} />
+      <div
+        className="flex flex-start bg-white bg-opacity-15 mt-4 p-5 rounded-[20px] w-full"
+        style={{
+          boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.25)",
+        }}
+      >
+        <TempWeekView
+          prefrenceUnit={prefrence.unit}
+          weatherData={weatherData}
+        />
       </div>
-      <div className="flex flex-start bg-white bg-opacity-15 mt-4 p-5 rounded-md w-full">
+      <div
+        className="flex flex-start bg-white bg-opacity-15 mt-2 p-5 rounded-[20px] w-full"
+        style={{
+          boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.25)",
+        }}
+      >
         <HumidityWeekView weatherData={weatherData} />
       </div>
     </section>

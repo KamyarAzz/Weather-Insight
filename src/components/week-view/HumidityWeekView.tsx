@@ -46,8 +46,8 @@ export default function HumidityWeekView({weatherData}: Props) {
 
   return (
     <div className="flex flex-col items-center gap-4 mt-6 overflow-hidden">
-      <h1 className="text-2xl">Humidity</h1>
-      <div className="flex gap-10">
+      <h1 className="text-2xl">Humidity Forecast</h1>
+      <div className="flex gap-12 mt-4">
         {averages.map((item) => (
           <HumidityView key={item.day} averages={item} />
         ))}
