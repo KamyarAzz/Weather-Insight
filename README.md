@@ -16,7 +16,8 @@ Weather Insight is a modern weather application built with React. It provides us
 
 - **Real-time Weather Data**: Get current weather conditions for your location or any city.
 - **Location Detection**: Automatically detects your current location to provide instant weather updates.
-- **7-Day Forecast**: View the weather forecast for today and the upcoming week.
+- **Weather Forecast**: View the weather forecast for today and the upcoming days.
+- **Humidity Forecast**: Get detailed humidity information along with the weather forecast.
 - **Search Functionality**: Easily change the prefilled city to get weather information for any location you want.
 - **Responsive Design**: Works seamlessly on both desktop and mobile devices.
 - **User-Friendly Interface**: Intuitive layout for easy navigation.
@@ -51,10 +52,11 @@ To get a local copy of the project up and running, follow these steps:
    npm install
 ```
 
-5. Create a .env file in the root directory and add your OpenWeatherMap API key:
+5. Create a .env file in the root directory and add your OpenWeatherMap API and IpGeoLocation API key:
 
 ```
-   VITE_API_KEY=your_api_key_here
+   VITE_WEATHER_API_KEY=your_OpenWeatherMap_api_key_here
+   VITE_GEO_API_KEY=your_IpGeoLocation_api_key_here
 ```
 
 6. Start the development server:
@@ -71,11 +73,11 @@ http://localhost:5173
 
 ## Usage
 
-Once the application is running, it will automatically detect your current location and display the current weather and forecast for today and the next week. You can also enter the name of any city in the search bar to change the prefilled city and get the corresponding weather information. The app will display the temperature, humidity, wind speed, and other relevant weather details.
+Once the application is running, it will automatically detect your current location and display the current weather and forecast for today and the next week. You can also enter the name of any city in the search bar to change the prefilled city and get the corresponding weather information. The app will display the temperature, humidity, and other relevant weather details.
 
 ## API
 
-This application uses the OpenWeatherMap API to fetch weather data. You will need to sign up for a free account and obtain an API key to use the application.
+This application uses the OpenWeatherMap API and the IpGeoLocation API to fetch weather data. You will need to sign up for a free account and obtain the API keys to use the application. While I have provided API keys for your convenience, I would appreciate it if you could create your own API keys for better security and to avoid hitting usage limits.
 
 ## Contributing
 
