@@ -2,6 +2,8 @@
 
 Weather Insight is a modern weather application built with React. It provides users with real-time weather data, forecasts, and insights for any location around the globe.
 
+[Preview](https://weatherly-insight.netlify.app/)
+
 ## Table of Contents
 
 - [Features](#features)
@@ -52,7 +54,7 @@ To get a local copy of the project up and running, follow these steps:
    npm install
 ```
 
-5. Create a .env file in the root directory and add your OpenWeatherMap API and IpGeoLocation API key:
+5. Edit the .env file in the root directory and add your OpenWeatherMap API and IpGeoLocation API key:
 
 ```
    VITE_WEATHER_API_KEY=your_OpenWeatherMap_api_key_here
